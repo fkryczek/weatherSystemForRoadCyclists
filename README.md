@@ -26,6 +26,6 @@
 - [RF24](github.com/nRF24/RF24)
 - [Low-Power](github.com/rocketscream/Low-Power)
 - [Adafruit BMP280](github.com/adafruit/Adafruit_BMP280_Library) => in Adafruit_BMP280.h you must edit #define BMP280_ADDRESS (0x77) to #define BMP280_ADDRESS (0x76)
-- [Adafruit SSD1306](https://)github.com/adafruit/Adafruit_SSD1306)
+- [Adafruit SSD1306](github.com/adafruit/Adafruit_SSD1306)
 - [Adafruit GFX](github.com/adafruit/Adafruit-GFX-Library)
 - [Adafruit BusIO](github.com/adafruit/Adafruit_BusIO)

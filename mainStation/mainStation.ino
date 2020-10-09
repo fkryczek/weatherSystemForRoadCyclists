@@ -4,17 +4,16 @@
 //RF24: github.com/nRF24/RF24
 //Low-Power: github.com/rocketscream/Low-Power
 //Adafruit BMP280: github.com/adafruit/Adafruit_BMP280_Library (in Adafruit_BMP280.h must edit #define BMP280_ADDRESS (0x77) to #define BMP280_ADDRESS (0x76))
-//Adafruit SSD1306: https://github.com/adafruit/Adafruit_SSD1306
-//Adafruit GFX: github.com/adafruit/Adafruit-GFX-Library
-//Adafruit BusIO: github.com/adafruit/Adafruit_BusIO
+//SSD1306Ascii: github.com/greiman/SSD1306Ascii
 //--------------------------------------------------
 #include <SPI.h>
 #include <nRF24L01.h>
 #include <RF24.h>
 #include <Wire.h>
-#include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h>
+#include <LowPower.h>
 #include <Adafruit_BMP280.h>
+#include <SSD1306Ascii.h>
+#include <SSD1306AsciiWire.h>
 
 #define LED1 4
 #define LED2 5
@@ -26,32 +25,37 @@
 
 const uint64_t pipeAddressTX = 0xFF00202100FF;
 const uint64_t pipeAddressRX = 0xFFFF2021FFFF;
-bool waiting;
-String command = "";
+bool waiting, connect, message = true;
+char command;
+float remoteTemperature = 150.01, remoteHumidity = 100.01, remoteBattery = 5.01;
 
 RF24 mainRadio(CEPIN, CSPIN);
 Adafruit_BMP280 bmp280;
-Adafruit_SSD1306 leftDisplay(128, 64, &Wire);
-Adafruit_SSD1306 rightDisplay(128, 64, &Wire);
+SSD1306AsciiWire leftDisplay, rightDisplay;
 
 void setup()
 {
+  Serial.begin(9600);
+  Serial.println("main weather station is connected");
+  Serial.println("setup started");
+
+  Serial.println("left display setup");
+  leftDisplay.begin(&Adafruit128x64, 0x3D);
+  Serial.println("right display setup");
+  rightDisplay.begin(&Adafruit128x64, 0x3C);
+  helloOLED();
+
+  Serial.println("LED setup");
   pinMode(LED1, OUTPUT);
   pinMode(LED2, OUTPUT);
   pinMode(LED3, OUTPUT);
   pinMode(LED4, OUTPUT);
-
-
-  helloWorld();
+  helloLED();
   blinkLED(5);
-
-  Serial.begin(9600);
-  Serial.println("main weatcher station is connected");
-  Serial.println("setup started");
 
   Serial.println("NRF24L01 setup");
   mainRadio.begin();
-  mainRadio.setAutoAck(false);         //disable auto-acknowlede packets
+  mainRadio.setAutoAck(false);         //disable auto-acknowledge packets
   mainRadio.setChannel(100);           //set communication channel
   mainRadio.setPALevel(RF24_PA_LOW);   //set Power Amplifier (PA) level: 0dBm
   mainRadio.setDataRate(RF24_250KBPS); //set the transmission data rate
@@ -62,32 +66,35 @@ void setup()
   Serial.println("BM280 setup");
   bmp280.begin();
 
-  Serial.println("Display 1 setup");
-  leftDisplay.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-  rightDisplay.begin(SSD1306_SWITCHCAPVCC, 0x3C);
-  testdrawchar();
+  Serial.println("connecting to remote startion");
+  getOutdoorData();
 
-  Serial.println("Display 2 setup");
+  leftDisplay.clear();
+  rightDisplay.clear();
+
+  Serial.println("setup ended");
 }
-void testdrawchar(void)
+void helloOLED()
 {
-  leftDisplay.clearDisplay();
+  leftDisplay.setFont(Adafruit5x7);
+  leftDisplay.clear();
+  leftDisplay.println("Design and implementa-");
+  leftDisplay.println("tion of a weather");
+  leftDisplay.println("system for road");
+  leftDisplay.println("cyclists.");
+  leftDisplay.println("");
+  leftDisplay.println("");
+  leftDisplay.println("     by Filip Kryczek");
 
-  leftDisplay.setTextSize(1);               // Normal 1:1 pixel scale
-  leftDisplay.setTextColor(SSD1306_WHITE);  // Draw white text
-  leftDisplay.setCursor(0, 0);              // Start at top-left corner
-  leftDisplay.println(F("TAKI TO TEST 0")); // Use full 256 char 'Code Page 437' font
-  leftDisplay.println(F("TAKI TO TEST 1"));
-  leftDisplay.println(F("TAKI TO TEST 2"));
-  leftDisplay.println(F("TAKI TO TEST 3"));
-  leftDisplay.println(F("TAKI TO TEST 4"));
-  leftDisplay.println(F("TAKI TO TEST 5"));
-  leftDisplay.println(F("TAKI TO TEST 6"));
-  leftDisplay.println(F("TAKI TO TEST 7"));
-  leftDisplay.display();
-  delay(2000);
+  rightDisplay.set2X();
+  rightDisplay.setFont(Adafruit5x7);
+  rightDisplay.clear();
+  rightDisplay.println("-----------");
+  rightDisplay.println("---SETUP---");
+  rightDisplay.println("-----------");
+  rightDisplay.println("-----------");
 }
-void helloWorld()
+void helloLED()
 {
   pinMode(4, OUTPUT);
   digitalWrite(4, HIGH);
@@ -108,7 +115,6 @@ void blinkLED(short counter)
     delay(100);
   }
 }
-
 void LEDstatus(bool first, bool secound, bool third, bool fourth)
 {
   if (first)
@@ -128,7 +134,7 @@ void LEDstatus(bool first, bool secound, bool third, bool fourth)
   else
     digitalWrite(LED4, LOW);
 }
-void sendCommand(char command)
+void sendCommand()
 {
   bool sentData;
   mainRadio.stopListening();
@@ -138,27 +144,29 @@ void sendCommand(char command)
   if (sentData)
   {
     waiting = true;
-    Serial.println("command was sent");
+    if (message)
+      Serial.println("command was sent");
   }
   else
   {
-    Serial.println("command wasn't sent");
+    if (message)
+      Serial.println("command wasn't sent");
   }
 }
-
-float receiveData(char command)
+float receiveData()
 {
   short resendCommandTime = 8000;
-  short recivedData = 0;
+  //short receivedData = 0;
   short repeatCount = 2;
-  float dataType;
+  float dataType = 0.0;
 
   while (waiting)
   {
     if (mainRadio.available())
     {
       mainRadio.read(&dataType, sizeof(dataType));
-      Serial.println(dataType);
+      if (message)
+        Serial.println(dataType);
       repeatCount = 0;
       resendCommandTime = 500;
     }
@@ -167,64 +175,183 @@ float receiveData(char command)
     if (resendCommandTime < 0)
       if (repeatCount > 0)
       {
-        sendCommand(command);
+        sendCommand();
         resendCommandTime = 8000;
         repeatCount--;
       }
       else
         break;
   }
-  Serial.println("all data from remote station were recived");
+  if (message)
+    Serial.println("all data from remote station were received");
   waiting = false;
+  return dataType;
 }
+void getOutdoorData()
+{
+  message = false;
+  command = 'C';
+  sendCommand();
+  if (receiveData() == 7918.00)
+  {
+    command = 'T';
+    sendCommand();
+    remoteTemperature = receiveData();
 
+    command = 'H';
+    sendCommand();
+    remoteHumidity = receiveData();
+
+    command = 'B';
+    sendCommand();
+    remoteBattery = receiveData();
+
+    command = 'D';
+    sendCommand();
+    receiveData();
+  }
+  message = true;
+}
+void drawLeftDisplay()
+{
+  leftDisplay.set1X();
+  leftDisplay.setFont(Adafruit5x7);
+  leftDisplay.setCursor(28, 0);
+  leftDisplay.println("---INDOOR---");
+  leftDisplay.setFont(Verdana12_bold);
+
+  leftDisplay.print("Temp.: ");
+  leftDisplay.print(bmp280.readTemperature());
+  leftDisplay.println(" *C");
+
+  leftDisplay.print("Press.: ");
+  leftDisplay.print((bmp280.readPressure()) / 100);
+  leftDisplay.println(" hPa");
+
+  leftDisplay.print("Alt.: ");
+  leftDisplay.print(bmp280.readAltitude());
+  leftDisplay.println(" m a.s.l");
+
+  leftDisplay.setFont(Adafruit5x7);
+  leftDisplay.setCursor(92, 8);
+  leftDisplay.print(analogRead(BATTERY) * (5.0 / 512.0));
+  leftDisplay.println("V");
+}
+void drawRightDisplay()
+{
+  rightDisplay.set1X();
+  rightDisplay.setFont(Adafruit5x7);
+  rightDisplay.setCursor(25, 0);
+  rightDisplay.println("---OUTDOOR---");
+  rightDisplay.setFont(Verdana12_bold);
+
+  rightDisplay.setCursor(0, 2);
+  rightDisplay.print("Temp.: ");
+  if (remoteTemperature < 150.01)
+    rightDisplay.print(remoteTemperature);
+  else
+    rightDisplay.print("N/A");
+  rightDisplay.println(" *C");
+
+  rightDisplay.setCursor(0, 5);
+  rightDisplay.print("Hum.: ");
+  if (remoteHumidity < 100.01)
+    rightDisplay.print(remoteHumidity);
+  else
+    rightDisplay.print("N/A");
+  rightDisplay.println(" %RH");
+
+  rightDisplay.setFont(Adafruit5x7);
+  rightDisplay.setCursor(92, 8);
+  if (remoteBattery < 5.01)
+    rightDisplay.print(remoteBattery);
+  else
+    rightDisplay.print("N/A");
+  rightDisplay.println("V");
+
+  getOutdoorData();
+}
 void loop()
 {
   if (Serial.available() > 0)
   {
-    //animation that arduino is connected to computer
-    command = Serial.readStringUntil('\n');
-    Serial.println(command[0]);
-    switch (command[0])
+    command = Serial.read();
+    if (command > 65 && command < 90)
     {
-    case 'C':
-      sendCommand('C');
-      receiveData('C');
-      break;
-    case 'D':
-      sendCommand('D');
-      receiveData('D');
-      break;
-    case 'O':
-      sendCommand('T');
-      receiveData('T');
-      break;
-    case 'H':
-      sendCommand('H');
-      receiveData('H');
-      break;
-    case 'B':
-      sendCommand('B');
-      receiveData('B');
+      Serial.println(command);
+      switch (command)
+      {
+      case 'C':
+        sendCommand();
+        if (receiveData() == 7918.00)
+        {
+          connect = true;
 
-      Serial.println(analogRead(BATTERY) * (5.0 / 1024.0));
-      break;
-    case 'R':
-      sendCommand('R');
-      receiveData('R');
-      break;
-    case 'I':
-      Serial.println(bmp280.readTemperature());
-      break;
-    case 'P':
-      Serial.println(bmp280.readPressure());
-      break;
-    case 'S':
-      //clean and refresh OLEDs
-      break;
+          rightDisplay.set2X();
+          rightDisplay.setFont(Adafruit5x7);
+          rightDisplay.clear();
+          rightDisplay.println("-----------");
+          rightDisplay.println("-CONNECTED-");
+          rightDisplay.println("-----------");
+          rightDisplay.println("-----------");
+        }
+        break;
+      case 'D':
+        sendCommand();
+        if (receiveData() == 797070.00)
+        {
+          connect = false;
+          rightDisplay.clear();
+        }
+
+        break;
+      case 'O':
+        command = 'T';
+        sendCommand();
+        receiveData();
+        break;
+      case 'H':
+        sendCommand();
+        receiveData();
+        break;
+      case 'B':
+        sendCommand();
+        message = false;
+        Serial.println(receiveData());
+        Serial.println(analogRead(BATTERY) * (5.0 / 1024.0));
+        message = true;
+        break;
+      case 'R':
+        sendCommand();
+        if (receiveData() == 828384.0)
+          ;
+        {
+          connect = false;
+          rightDisplay.clear();
+        }
+        break;
+      case 'I':
+        Serial.println(84697780.00);
+        Serial.println(bmp280.readTemperature());
+        Serial.println("all data from main station were received");
+        break;
+      case 'P':
+        Serial.println(80826983.00);
+        Serial.println(bmp280.readPressure());
+        Serial.println("all data from main station were received");
+        break;
+      case 'S':
+        leftDisplay.clear();
+        rightDisplay.clear();
+        break;
+      }
     }
   }
-  //else if(waiting==false){
-  //  LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
-  //}
+  else if (waiting == false && connect == false && millis() > 10000)
+  {
+    drawLeftDisplay();
+    drawRightDisplay();
+    for (short x = 0; x < 8; x++)
+      LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
+  }
 }

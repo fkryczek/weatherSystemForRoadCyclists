@@ -28,6 +28,7 @@ const uint64_t pipeAddressRX = 0xFFFF2021FFFF;
 bool waiting, connect, message = true;
 char command;
 float remoteTemperature = 150.01, remoteHumidity = 100.01, remoteBattery = 5.01;
+short sleepTime=0;
 
 RF24 mainRadio(CEPIN, CSPIN);
 Adafruit_BMP280 bmp280;
@@ -115,13 +116,13 @@ void blinkLED(short counter)
     delay(100);
   }
 }
-void LEDstatus(bool first, bool secound, bool third, bool fourth)
+void LEDstatus(bool first, bool second, bool third, bool fourth)
 {
   if (first)
     digitalWrite(LED1, HIGH);
   else
     digitalWrite(LED1, LOW);
-  if (secound)
+  if (second)
     digitalWrite(LED2, HIGH);
   else
     digitalWrite(LED2, LOW);
@@ -276,7 +277,7 @@ void loop()
   if (Serial.available() > 0)
   {
     command = Serial.read();
-    if (command > 65 && command < 90)
+    if (command > 64 && command < 91)
     {
       Serial.println(command);
       switch (command)
@@ -302,6 +303,7 @@ void loop()
         {
           connect = false;
           rightDisplay.clear();
+          sleepTime=0;
         }
 
         break;
@@ -328,6 +330,7 @@ void loop()
         {
           connect = false;
           rightDisplay.clear();
+          sleepTime=0;
         }
         break;
       case 'I':
@@ -343,15 +346,24 @@ void loop()
       case 'S':
         leftDisplay.clear();
         rightDisplay.clear();
+        sleepTime=0;
+        break;
+      case 'A':
+        Serial.println(84697780.00);
+        Serial.println(bmp280.readAltitude());
+        Serial.println("all data from main station were received");
         break;
       }
     }
   }
-  else if (waiting == false && connect == false && millis() > 10000)
+  else if (waiting == false && connect == false)
   {
-    drawLeftDisplay();
-    drawRightDisplay();
-    for (short x = 0; x < 8; x++)
+    sleepTime--;
+    if(sleepTime<1){
+      drawLeftDisplay();
+      drawRightDisplay();
+      sleepTime=8;
+    }
       LowPower.powerDown(SLEEP_8S, ADC_OFF, BOD_OFF);
   }
 }

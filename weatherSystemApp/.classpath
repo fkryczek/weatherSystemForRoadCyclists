@@ -15,7 +15,7 @@
 	<classpathentry kind="lib" path="lib/javafx.swing.jar"/>
 	<classpathentry kind="lib" path="lib/javafx.web.jar"/>
 	<classpathentry kind="lib" path="lib/jfoenix-9.0.10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Filip/Desktop/pracaDyplomowa/weatherSystemApp/lib/jSerialComm-2.6.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Filip/Downloads/arduino.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Filip/Desktop/GIT/pracaDyplomowa/weatherSystemApp/lib/jSerialComm-2.6.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Filip/Desktop/GIT/pracaDyplomowa/weatherSystemApp/lib/mysql-connector-java-8.0.22.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

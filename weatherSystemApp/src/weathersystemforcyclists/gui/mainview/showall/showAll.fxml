@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane fx:id="showAllPane" prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weathersystemforcyclists.gui.mainview.showall.ShowAllController">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#787880" height="100.0" layoutX="25.0" layoutY="25.0" opacity="0.79" stroke="TRANSPARENT" strokeType="INSIDE" width="850.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="525.0" layoutX="95.0" layoutY="87.0" opacity="0.9" stroke="TRANSPARENT" strokeType="INSIDE" width="750.0" />
+      <Text fill="WHITE" layoutX="55.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Show all" wrappingWidth="463.017578125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <TabPane layoutX="95.0" layoutY="96.0" prefHeight="515.0" prefWidth="750.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Training">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="477.0" prefWidth="750.0">
+                     <children>
+                        <TableView fx:id="trainingTable" onMouseClicked="#setID" prefHeight="487.0" prefWidth="750.0" style="-fx-selection-bar: #d4b48c; -fx-selection-bar-non-focused: #d4b48c;">
+                          <columns>
+                            <TableColumn fx:id="trainingID" prefWidth="51.0" style="-fx-alignment: CENTER;" text="ID" />
+                            <TableColumn fx:id="trainingWeatherID" prefWidth="83.0" style="-fx-alignment: CENTER;" text="Weather ID" />
+                              <TableColumn fx:id="trainingClothesID" prefWidth="86.0" style="-fx-alignment: CENTER;" text="Clothes ID" />
+                              <TableColumn fx:id="trainingStartTime" prefWidth="198.0" style="-fx-alignment: CENTER;" text="Start time" />
+                              <TableColumn fx:id="trainingEndTime" prefWidth="164.0" style="-fx-alignment: CENTER;" text="End time" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Weather">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="318.0" prefWidth="750.0">
+                     <children>
+                        <TableView fx:id="weatherTable" prefHeight="487.0" prefWidth="750.0" style="-fx-selection-bar-non-focused: #d4b48c; -fx-selection-bar: #d4b48c;">
+                          <columns>
+                            <TableColumn fx:id="weatherID" prefWidth="49.0" style="-fx-alignment: CENTER;" text="ID" />
+                            <TableColumn fx:id="weatherDate" minWidth="0.0" prefWidth="163.0" style="-fx-alignment: CENTER;" text="Date" />
+                              <TableColumn fx:id="weatherTemperature" prefWidth="163.0" style="-fx-alignment: CENTER;" text="Temperature [°C]" />
+                              <TableColumn fx:id="weatherHumidity" prefWidth="127.0" style="-fx-alignment: CENTER;" text="Humidity [%RH]" />
+                              <TableColumn fx:id="weatherPressure" prefWidth="96.0" style="-fx-alignment: CENTER;" text="Pressure [hPa]" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab text="Clothes">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="clothesTable" prefHeight="487.0" prefWidth="750.0" style="-fx-selection-bar-non-focused: #d4b48c; -fx-selection-bar: #d4b48c;">
+                           <columns>
+                              <TableColumn fx:id="clothesID" prefWidth="27.0" style="-fx-alignment: CENTER;" text="ID" />
+                              <TableColumn fx:id="clothesComfort" prefWidth="53.0" style="-fx-alignment: CENTER;" text="Comfort" />
+                              <TableColumn fx:id="clothesHead" prefWidth="76.0" text="Head" />
+                              <TableColumn fx:id="clothesThorax" prefWidth="87.0" text="Thorax" />
+                              <TableColumn fx:id="clothesHands" prefWidth="77.0" text="Hands" />
+                              <TableColumn fx:id="clothesLegs" prefWidth="79.0" text="Legs" />
+                              <TableColumn fx:id="clothesFeet" prefWidth="73.0" text="Feet" />
+                              <TableColumn fx:id="clothesComment" prefWidth="258.0" text="Comment" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d4b48c" height="23.0" layoutX="695.0" layoutY="99.0" opacity="0.6" stroke="#4677a0" strokeType="INSIDE" width="150.0" />
+      <Label fx:id="trainingIDLabel" alignment="CENTER" layoutX="695.0" layoutY="102.0" prefHeight="17.0" prefWidth="55.0" text="T:  —">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="weatherDLabel" alignment="CENTER" layoutX="743.0" layoutY="102.0" prefHeight="17.0" prefWidth="55.0" text="W: —">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label fx:id="clothesIDLabel" alignment="CENTER" layoutX="790.0" layoutY="102.0" prefHeight="17.0" prefWidth="55.0" text="C: —">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

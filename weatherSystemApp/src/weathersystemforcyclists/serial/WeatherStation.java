@@ -5,6 +5,7 @@ import java.io.IOException;
 public class WeatherStation {
 	private SerialPortCommunication mainStation = new SerialPortCommunication();
 	private boolean mainStationConnected = false, remoteStationConnected = false;
+	private boolean busy = false;
 
 	public boolean isMainStationConnected() {
 		return mainStationConnected;
@@ -12,6 +13,9 @@ public class WeatherStation {
 
 	public boolean isRemoteStationConnected() {
 		return remoteStationConnected;
+	}
+	public boolean getBusyStatus() {
+		return busy;
 	}
 
 	public boolean connectMainStation(String serialPortName) throws InterruptedException, IOException {
@@ -73,12 +77,9 @@ public class WeatherStation {
 		mainStation.clearAllRecivedData();
 
 		String[] recivedData = mainStation.sendCommand(command);
-		System.out.println("komenda: " + command);
 		for (int x = 0; x < recivedData.length; x++) {
-			if (recivedData[x].length() > 2)
-				;
+			if (recivedData[x].length() > 2);
 			recivedData[x] = recivedData[x].substring(0, recivedData[x].length() - 1);
-			System.out.println("[" + x + "] " + recivedData[x] + "/" + recivedData[x].equals(confirmationCode));
 			if (recivedData[x].equals(confirmationCode))
 				if (x + 1 < recivedData.length)
 					return recivedData[x + 1];
@@ -87,6 +88,7 @@ public class WeatherStation {
 	}
 
 	public String[] syncAllData() throws IOException, InterruptedException {
+		busy=true;
 		mainStation.readFromSerial(1000);
 		mainStation.clearAllRecivedData();
 
@@ -98,8 +100,8 @@ public class WeatherStation {
 		data[4] = getData('P', "808269.00");
 		data[5] = getData('A', "657684.00");
 		data[3] = String.format("%.2f",
-				(Float.parseFloat(data[4]) / Math.pow(1.0 - (Float.parseFloat(data[5]) / 44330.0), 5.255)));
-
+				(Float.parseFloat(data[4]) / Math.pow(1.0 - (Float.parseFloat(data[5]) / 44330.0), 5.255)));		
+		
 		String[] recivedData = mainStation.sendCommand('B');
 		for (int x = 0; x < recivedData.length; x++) {
 			recivedData[x] = recivedData[x].substring(0, recivedData[x].length() - 1);
@@ -109,6 +111,21 @@ public class WeatherStation {
 				break;
 			}
 		}
+		busy=false;
+		return data;
+	}
+	public String[] getDataToWeatherTable() throws IOException, InterruptedException {
+		busy=true;
+		mainStation.readFromSerial(1000);
+		mainStation.clearAllRecivedData();
+
+		String[] data = new String[3];
+
+		data[0] = getData('O', "846977.00");
+		data[1] = getData('H', "728577.00");
+		data[2] = getData('P', "808269.00");
+
+		busy=false;
 		return data;
 	}
 

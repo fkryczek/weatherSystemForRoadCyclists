@@ -41,6 +41,11 @@ public class SerialPortCommunication {
 					readFromSerial(8000);
 				else
 					break;
+		else if(command == 'H') {
+			Thread.sleep(100);
+			for (int x = 0; x < 3; x++)
+				readFromSerial(3000);
+		}
 		else
 			for (int x = 0; x < 3; x++)
 				readFromSerial(1000);

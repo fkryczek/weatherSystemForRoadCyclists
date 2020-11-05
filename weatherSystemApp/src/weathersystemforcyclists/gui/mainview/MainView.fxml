@@ -16,11 +16,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="root" maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #444448;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weathersystemforcyclists.gui.MainViewController">
+<AnchorPane fx:id="root" maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #444448;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weathersystemforcyclists.gui.mainview.MainViewController">
    <children>
       <ImageView fitHeight="800.0" fitWidth="1200.0" pickOnBounds="true">
          <image>
-            <Image url="@background/background.jpeg" />
+            <Image url="@../../../../etc/background/background.jpeg" />
          </image>
          <effect>
             <GaussianBlur radius="40.0" />
@@ -56,7 +56,7 @@
                </font>
             </JFXButton>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#4677a0" height="50.0" layoutY="150.0" opacity="0.5" stroke="#d4b48c" strokeType="INSIDE" style="-fx-background-radius: 25 0 0 25; -fx-background-color: #4677a0;" width="250.0" />
-            <JFXButton fx:id="showAllTrainingButton" alignment="CENTER" layoutY="150.0" onMouseClicked="#showAllTraining" prefHeight="50.0" prefWidth="250.0" ripplerFill="#d6b78c" style="-fx-background-radius: 0;" text="SHOW ALL TRAINING" textFill="WHITE">
+            <JFXButton fx:id="showAllTrainingButton" alignment="CENTER" layoutY="150.0" onMouseClicked="#showAllTraining" prefHeight="50.0" prefWidth="250.0" ripplerFill="#d6b78c" style="-fx-background-radius: 0;" text="SHOW ALL" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
@@ -92,7 +92,7 @@
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d4b48c" height="100.0" layoutX="1.0" opacity="0.4" stroke="#4677a0" strokeType="INSIDE" styleClass="#d6b78c" width="950.0" />
             <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="30.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@icons/thermometer.png" />
+                  <Image url="@../../../../etc/icons/thermometer.png" />
                </image>
             </ImageView>
             <Label fx:id="temperatureIn" alignment="CENTER" layoutX="178.0" layoutY="15.0" prefHeight="19.0" prefWidth="115.0" text="N/A" textAlignment="CENTER" textOverrun="CLIP">
@@ -107,7 +107,7 @@
             </Text>
             <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="30.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@icons/thermometer.png" />
+                  <Image url="@../../../../etc/icons/thermometer.png" />
                </image>
             </ImageView>
             <Label fx:id="temperatureOut" alignment="CENTER" layoutX="178.0" layoutY="40.0" prefHeight="19.0" prefWidth="115.0" text="N/A" textAlignment="CENTER" textOverrun="CLIP">
@@ -122,7 +122,7 @@
             </Text>
             <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="27.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@icons/humidity.png" />
+                  <Image url="@../../../../etc/icons/humidity.png" />
                </image>
             </ImageView>
             <Text fontSmoothingType="LCD" layoutX="50.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="HUMIDITY (OUT)">
@@ -132,7 +132,7 @@
             </Text>
             <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="323.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@icons/barometer.png" />
+                  <Image url="@../../../../etc/icons/barometer.png" />
                </image>
             </ImageView>
             <Label fx:id="relativePressure" alignment="CENTER" layoutX="476.0" layoutY="15.0" prefHeight="19.0" prefWidth="115.0" text="N/A" textAlignment="CENTER" textOverrun="CLIP">
@@ -147,7 +147,7 @@
             </Text>
             <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="323.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@icons/barometer.png" />
+                  <Image url="@../../../../etc/icons/barometer.png" />
                </image>
             </ImageView>
             <Label fx:id="absolutePressure" alignment="CENTER" layoutX="476.0" layoutY="40.0" prefHeight="19.0" prefWidth="115.0" text="N/A" textAlignment="CENTER" textOverrun="CLIP">
@@ -162,7 +162,7 @@
             </Text>
             <ImageView fitHeight="16.0" fitWidth="16.0" layoutX="323.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@icons/altitude.png" />
+                  <Image url="@../../../../etc/icons/altitude.png" />
                </image>
             </ImageView>
             <Label fx:id="altitude" alignment="CENTER" layoutX="476.0" layoutY="67.0" prefHeight="19.0" prefWidth="115.0" text="N/A" textAlignment="CENTER" textOverrun="CLIP">
@@ -192,7 +192,7 @@
             </Text>
             <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="623.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@icons/battery.png" />
+                  <Image url="@../../../../etc/icons/battery.png" />
                </image></ImageView>
             <Label fx:id="batteryOut" alignment="CENTER" layoutX="746.0" layoutY="40.0" prefHeight="19.0" prefWidth="115.0" text="N/A" textAlignment="CENTER" textOverrun="CLIP">
                <font>
@@ -211,7 +211,7 @@
             </Text>
             <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="623.0" layoutY="45.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@icons/battery.png" />
+                  <Image url="@../../../../etc/icons/battery.png" />
                </image></ImageView>
             <Label fx:id="syncTime" alignment="CENTER" layoutX="746.0" layoutY="67.0" prefHeight="19.0" prefWidth="115.0" text="N/A" textAlignment="CENTER" textOverrun="CLIP">
                <font>
@@ -223,9 +223,9 @@
                   <Font name="System Bold" size="12.0" />
                </font>
             </Text>
-            <ImageView fitHeight="16.0" fitWidth="16.0" layoutX="627.0" layoutY="66.0" onMouseClicked="#syncAllData" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="16.0" fitWidth="16.0" layoutX="858.0" layoutY="67.0" onMouseClicked="#syncAllData" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@icons/time.png" />
+                  <Image url="@../../../../etc/icons/refresch.png" />
                </image></ImageView>
             <Label fx:id="humidityOut" alignment="CENTER" layoutX="178.0" layoutY="67.0" prefHeight="19.0" prefWidth="115.0" text="N/A" textAlignment="CENTER" textOverrun="CLIP">
                <font>
@@ -272,6 +272,11 @@
                   <Font size="13.0" />
                </font>
             </Text>
+            <ImageView fitHeight="16.0" fitWidth="16.0" layoutX="625.0" layoutY="67.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../etc/icons/time.png" />
+               </image>
+            </ImageView>
          </children>
       </Pane>
       <Pane layoutY="630.0" prefHeight="170.0" prefWidth="250.0">
@@ -299,6 +304,7 @@
             <Line endX="122.0" layoutX="114.0" layoutY="62.0" startX="-100.0" stroke="#d4b48c" strokeWidth="2.0" />
          </children>
       </Pane>
+      <Pane fx:id="pane" layoutX="275.0" layoutY="125.0" prefHeight="650.0" prefWidth="900.0" />
       <Pane fx:id="connectionPane" layoutX="275.0" layoutY="125.0" prefHeight="650.0" prefWidth="900.0" visible="false">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#787880" height="100.0" layoutX="25.0" layoutY="50.0" opacity="0.79" stroke="TRANSPARENT" strokeType="INSIDE" width="850.0" />
@@ -358,11 +364,6 @@
                   </Text>
                </children>
             </Pane>
-            <Text fx:id="closeConnectionPane" fill="#d4b48c" layoutX="721.0" layoutY="134.0" onMouseClicked="#closeActualView" strokeType="OUTSIDE" strokeWidth="0.0" text="X">
-               <font>
-                  <Font name="System Bold" size="20.0" />
-               </font>
-            </Text>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d4b48c" height="50.0" layoutX="385.0" layoutY="318.0" opacity="0.4" stroke="#4677a0" strokeType="INSIDE" width="170.0" />
             <JFXButton fx:id="connectMainStationButton" buttonType="RAISED" layoutX="385.0" layoutY="318.0" onMouseClicked="#connectMainStation" prefHeight="50.0" prefWidth="170.0" ripplerFill="#d4b48c" text="CONNECT">
                <font>
@@ -378,5 +379,10 @@
             <Label fx:id="connectionProgressInfoLabel" alignment="CENTER" layoutX="386.0" layoutY="281.0" prefHeight="17.0" prefWidth="350.0" />
             <ProgressBar fx:id="connectingProgressBar" layoutX="385.0" layoutY="300.0" prefHeight="18.0" prefWidth="350.0" style="-fx-accent: grey;" visible="false" />
          </children></Pane>
+      <Text fx:id="closeAll" fill="#d4b48c" layoutX="1155.0" layoutY="147.0" onMouseClicked="#closeActualView" strokeType="OUTSIDE" strokeWidth="0.0" text="X" visible="false">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>

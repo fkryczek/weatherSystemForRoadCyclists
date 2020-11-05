@@ -1,4 +1,4 @@
-package weathersystemforcyclists.gui;
+package weathersystemforcyclists.gui.mainview;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXListView;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
@@ -18,12 +19,17 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import weathersystemforcyclists.gui.mainview.clothesselection.ClothesSelectionController;
 import weathersystemforcyclists.log.LOG;
 import weathersystemforcyclists.serial.SerialPortCommunication;
 import weathersystemforcyclists.serial.WeatherStation;
 
 public class MainViewController {
 
+	Pane[] paneList = new Pane[7];
+
+	@FXML
+	private Pane pane;
 	@FXML
 	private AnchorPane root;
 	@FXML
@@ -43,7 +49,7 @@ public class MainViewController {
 	@FXML
 	private JFXButton helpButton;
 
-	public void setDisableAllMenuButton(boolean disable) {
+	private void setDisableAllMenuButton(boolean disable) {
 		stationCommunicationButton.setDisable(disable);
 		clothesSelectButton.setDisable(disable);
 		showAllTrainingButton.setDisable(disable);
@@ -76,11 +82,38 @@ public class MainViewController {
 	@FXML
 	void selectClothes(MouseEvent event) {
 
+		closeAll.setVisible(true);
+		setDisableAllMenuButton(true);
+		clothesSelectButton.setVisible(true);
+		pane.setVisible(true);
+
+		try {
+			ClothesSelectionController.setMainStationObject(weatherStation);
+			paneList[0] = FXMLLoader.load(getClass().getResource("clothesselection/ClothesSelection.fxml"));
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		pane.getChildren().setAll(paneList[0]);
+
 	}
 
 	@FXML
 	void showAllTraining(MouseEvent event) {
+		closeAll.setVisible(true);
+		setDisableAllMenuButton(true);
+		clothesSelectButton.setVisible(true);
+		pane.setVisible(true);
 
+		try {
+			paneList[1] = FXMLLoader.load(getClass().getResource("showall/showAll.fxml"));
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		pane.getChildren().setAll(paneList[1]);
 	}
 
 //--------------------------------------------------
@@ -118,7 +151,7 @@ public class MainViewController {
 	@FXML
 	private Pane connectionPane;
 	@FXML
-	private Text closeConnectionPane;
+	private Text closeAll;
 	@FXML
 	private JFXListView<String> serialPortListView;
 	@FXML
@@ -137,14 +170,14 @@ public class MainViewController {
 	private Label connectionProgressInfoLabel;
 
 	private SerialPortCommunication mainStation = new SerialPortCommunication();
-	private WeatherStation weatcherStation = new WeatherStation();
+	private WeatherStation weatherStation = new WeatherStation();
 	private boolean serialBusy = false, isSyncTime = false;
 	private LOG log = new LOG("MVC");
 
 	@FXML
 	void showCommunicationPane(MouseEvent event) {
 		setDisableAllMenuButton(true);
-
+		closeAll.setVisible(true);
 		connectionPane.setVisible(true);
 
 		int numberOfAllPorts = mainStation.getNumberOfAllPorts();
@@ -153,7 +186,7 @@ public class MainViewController {
 		for (int x = 0; x < numberOfAllPorts; x++)
 			serialPortListView.getItems().add(portsDescription[x]);
 
-		if (weatcherStation.isMainStationConnected()) {
+		if (weatherStation.isMainStationConnected()) {
 			mainStationConnectionStatusLabel.setTextFill(Color.GREEN);
 			mainStationConnectionStatusLabel.setText("CONNECTED");
 			connectMainStationButton.setDisable(true);
@@ -165,7 +198,7 @@ public class MainViewController {
 			connectMainStationButton.setDisable(false);
 			disconnectMainStationButton.setDisable(true);
 		}
-		if (weatcherStation.isRemoteStationConnected()) {
+		if (weatherStation.isRemoteStationConnected()) {
 			remoteStationConnectionStatusLabel.setTextFill(Color.GREEN);
 			remoteStationConnectionStatusLabel.setText("CONNECTED");
 		} else {
@@ -177,8 +210,10 @@ public class MainViewController {
 	@FXML
 	void closeActualView(MouseEvent event) {
 		connectionPane.setVisible(false);
+		pane.setVisible(false);
 		serialPortListView.getItems().clear();
 		setDisableAllMenuButton(false);
+		closeAll.setVisible(false);
 	}
 
 	@FXML
@@ -210,14 +245,14 @@ public class MainViewController {
 			String serialPortName = serialPortNameTextField.getText();
 			connectingProgressBar.setVisible(true);
 			connectMainStationButton.setDisable(true);
-			closeConnectionPane.setVisible(false);
+			closeAll.setVisible(false);
 			try {
 				setTextInLabel(connectionProgressInfoLabel, "trying to connect to main station");
-				if (weatcherStation.connectMainStation(serialPortName)) {
+				if (weatherStation.connectMainStation(serialPortName)) {
 					setConnectionText(mainStationConnectionStatusLabel, true);
 					setConnectionText(mainStationConnectedStatus, true);
 					setTextInLabel(connectionProgressInfoLabel, "trying to connect to remote station");
-					if (weatcherStation.isRemoteStationConnected()) {
+					if (weatherStation.isRemoteStationConnected()) {
 						setConnectionText(remoteStationConnectionStatusLabel, true);
 						setConnectionText(remoteStationConnectedStatus, true);
 						setTextInLabel(connectionProgressInfoLabel, "trying to sync all data");
@@ -235,7 +270,7 @@ public class MainViewController {
 			}
 			setTextInLabel(connectionProgressInfoLabel, "");
 			connectingProgressBar.setVisible(false);
-			closeConnectionPane.setVisible(true);
+			closeAll.setVisible(true);
 			serialBusy = false;
 		}).start();
 
@@ -243,29 +278,31 @@ public class MainViewController {
 
 	@FXML
 	void disconnectMainStation(MouseEvent event) {
-		new Thread(() -> { // Lambda Expression
-			serialBusy = true;
-			connectingProgressBar.setVisible(true);
-			closeConnectionPane.setVisible(false);
-			try {
-				setTextInLabel(connectionProgressInfoLabel, "trying to disconnect stations");
-				if (weatcherStation.disconnectMainStation()) {
-					setConnectionText(mainStationConnectionStatusLabel, false);
-					setConnectionText(mainStationConnectedStatus, false);
-					setConnectionText(remoteStationConnectionStatusLabel, false);
-					setConnectionText(remoteStationConnectedStatus, false);
-					connectMainStationButton.setDisable(false);
-					disconnectMainStationButton.setDisable(true);
+		if (weatherStation.getBusyStatus() == false) {
+			new Thread(() -> { // Lambda Expression
+				serialBusy = true;
+				connectingProgressBar.setVisible(true);
+				closeAll.setVisible(false);
+				try {
+					setTextInLabel(connectionProgressInfoLabel, "trying to disconnect stations");
+					if (weatherStation.disconnectMainStation()) {
+						setConnectionText(mainStationConnectionStatusLabel, false);
+						setConnectionText(mainStationConnectedStatus, false);
+						setConnectionText(remoteStationConnectionStatusLabel, false);
+						setConnectionText(remoteStationConnectedStatus, false);
+						connectMainStationButton.setDisable(false);
+						disconnectMainStationButton.setDisable(true);
+					}
+				} catch (IOException | InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			} catch (IOException | InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			connectingProgressBar.setVisible(false);
-			closeConnectionPane.setVisible(true);
-			serialBusy = false;
-			setTextInLabel(connectionProgressInfoLabel, "");
-		}).start();
+				connectingProgressBar.setVisible(false);
+				closeAll.setVisible(true);
+				serialBusy = false;
+				setTextInLabel(connectionProgressInfoLabel, "");
+			}).start();
+		}
 
 	}
 
@@ -294,12 +331,12 @@ public class MainViewController {
 
 	@FXML
 	void syncAllData(MouseEvent event) {
-		if ((!serialBusy || isSyncTime) && weatcherStation.isMainStationConnected()
-				&& weatcherStation.isRemoteStationConnected()) {
+		if ((!serialBusy || isSyncTime) && weatherStation.isMainStationConnected()
+				&& weatherStation.isRemoteStationConnected() && !weatherStation.getBusyStatus()) {
 			try {
 				connectMainStationButton.setDisable(true);
 				disconnectMainStationButton.setDisable(true);
-				String[] data = weatcherStation.syncAllData();
+				String[] data = weatherStation.syncAllData();
 				setTextInLabel(temperatureIn, data[0]);
 				setTextInLabel(temperatureOut, data[1]);
 				setTextInLabel(humidityOut, data[2]);
@@ -328,4 +365,8 @@ public class MainViewController {
 		}
 	}
 
+	@FXML
+	void initialize() {
+
+	}
 }

@@ -1,4 +1,4 @@
-package weathersystemforcyclists.gui.mainview.delete;
+package weathersystemforcyclists.gui.mainview.deletetraining;
 
 import java.sql.Timestamp;
 

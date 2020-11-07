@@ -26,7 +26,7 @@ import weathersystemforcyclists.serial.WeatherStation;
 
 public class MainViewController {
 
-	Pane[] paneList = new Pane[6];
+	Pane[] paneList = new Pane[7];
 
 	@FXML
 	private Pane pane;
@@ -61,6 +61,21 @@ public class MainViewController {
 
 	@FXML
 	void addTraining(MouseEvent event) {
+		
+		closeAll.setVisible(true);
+		setDisableAllMenuButton(true);
+		addTrainingButton.setVisible(true);
+		pane.setVisible(true);
+
+		try {
+			ClothesSelectionController.setMainStationObject(weatherStation);
+			paneList[3] = FXMLLoader.load(getClass().getResource("addtraining/AddTraining.fxml"));
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		pane.getChildren().setAll(paneList[3]);
 
 	}
 
@@ -70,12 +85,25 @@ public class MainViewController {
 		setDisableAllMenuButton(true);
 		helpButton.setVisible(true);
 		pane.setVisible(true);
-		pane.getChildren().setAll(paneList[4]);
+		pane.getChildren().setAll(paneList[5]);
 	}
 
 	@FXML
-	void editTraining(MouseEvent event) {
+	void editTraining(MouseEvent event) {closeAll.setVisible(true);
+	setDisableAllMenuButton(true);
+	addTrainingButton.setVisible(true);
+	pane.setVisible(true);
 
+	try {
+		ClothesSelectionController.setMainStationObject(weatherStation);
+		paneList[4] = FXMLLoader.load(getClass().getResource("edittraining/EditTraining.fxml"));
+
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	pane.getChildren().setAll(paneList[4]);
+		
 	}
 
 	@FXML
@@ -84,7 +112,7 @@ public class MainViewController {
 		setDisableAllMenuButton(true);
 		helpButton.setVisible(true);
 		pane.setVisible(true);
-		pane.getChildren().setAll(paneList[5]);
+		pane.getChildren().setAll(paneList[6]);
 
 	}
 
@@ -377,8 +405,8 @@ public class MainViewController {
 	@FXML
 	void initialize() {
 		try {
-			paneList[4] = FXMLLoader.load(getClass().getResource("delete/Delete.fxml"));
-			paneList[5] = FXMLLoader.load(getClass().getResource("help/Help.fxml"));
+			paneList[5] = FXMLLoader.load(getClass().getResource("deleteTraining/Delete.fxml"));
+			paneList[6] = FXMLLoader.load(getClass().getResource("help/Help.fxml"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

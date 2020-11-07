@@ -14,9 +14,9 @@ import weathersystemforcyclists.database.table.Weather;
 
 public class DatabaseCommunication {
 
-	private String databaseName = "weathersystemdatabase";
-	private String databaseUser = "root";
-	private String databasePassword = "pdFK2020.";
+	private String databaseName = "";
+	private String databaseUser = "";
+	private String databasePassword = ".";
 
 	private String fullDatabaseName = "jdbc:mysql://localhost:3306/" + databaseName
 			+ "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=CET";
@@ -32,6 +32,41 @@ public class DatabaseCommunication {
 				System.out.println(rs.getInt(1) + "  " + rs.getFloat(2) + "  " + rs.getFloat(3));
 			con.close();
 
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	public void setClothesData(boolean exist, int ID, double comfortRate, String head,
+			String thorax, String hands, String legs, String feet, String comment) {
+		
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection(fullDatabaseName, databaseUser, databasePassword);
+			Statement statement = con.createStatement();
+			if (exist) {
+				
+				statement.execute("UPDATE `weathersystemdatabase`.`clothes` "
+						+ "SET `comfortRate` = '"+comfortRate+"', `head` = '"+head+"', `thorax` = '"+thorax+"', `hands` = '"+hands+"', `legs` = '"+legs+"', `feet` = '"+feet+"', `comment` = '"+comment+"' WHERE (`clothesID` = '"+ID+"');");
+
+				
+			} else {
+				
+				statement.execute("INSERT INTO `weathersystemdatabase`.`clothes` (`clothesID`, `comfortRate`, `head`, `thorax`, `hands`, `legs`, `feet`, `comment`) "
+						+ "VALUES ('0', '"+ comfortRate +"', '"+ head +"', '"+ thorax +"', '"+ hands +"', '"+ legs +"', '"+ feet +"', '"+ comment +"');");
+			}
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	public void setTraining(Training training) {
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection(fullDatabaseName, databaseUser, databasePassword);
+			Statement statement = con.createStatement();
+			statement.execute("INSERT INTO `weathersystemdatabase`.`training` (`trainingID`, `measurementID`, `clothesID`, `startTime`, `endTime`) VALUES ('0', '"+training.getMeasurementID()+"', '"+training.getClothesID()+"', '"+training.getStartTime()+"', '"+training.getEndTime()+"');");			
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -185,6 +220,24 @@ public class DatabaseCommunication {
 		}
 		return size;
 	}
+	private int sizeTodayWeather() {
+		int size = 0;
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection(fullDatabaseName, databaseUser, databasePassword);
+
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM weathersystemdatabase.weather	WHERE CAST(measurementData AS DATE) = CAST(CURRENT_TIMESTAMP AS DATE);");
+			rs.next();
+			size = rs.getInt(1);
+			rs.close();
+			con.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return size;
+	}
 
 	public Data[] getAllData() {
 		try {
@@ -239,9 +292,9 @@ public class DatabaseCommunication {
 			int x = 0;
 			while (rs.next()) {
 				data[x] = new Training();
-				data[x].setClothesID(rs.getInt(1));
+				data[x].setTainingID(rs.getInt(1));
 				data[x].setMeasurementID(rs.getInt(2));
-				data[x].setTainingID(rs.getInt(3));
+				data[x].setClothesID(rs.getInt(3));
 				data[x].setStartTime(rs.getTimestamp(4));
 				data[x].setEndTime(rs.getTimestamp(5));
 
@@ -264,11 +317,63 @@ public class DatabaseCommunication {
 			ResultSet rs = stmt.executeQuery("SELECT * " + "FROM weathersystemdatabase.training "
 					+ "WHERE trainingID = "+ ID + " ;");
 			rs.next();
-			data.setClothesID(rs.getInt(1));
+			
+			data.setTainingID(rs.getInt(1));
 			data.setMeasurementID(rs.getInt(2));
-			data.setTainingID(rs.getInt(3));
+			data.setClothesID(rs.getInt(3));
 			data.setStartTime(rs.getTimestamp(4));
 			data.setEndTime(rs.getTimestamp(5));
+			
+			rs.close();
+			con.close();
+			return data;
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
+	}
+	public Clothes getClothesData(int ID) {
+		try {
+			Clothes data = new Clothes();
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection(fullDatabaseName, databaseUser, databasePassword);
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * " + "FROM weathersystemdatabase.clothes "
+					+ "WHERE clothesID = "+ ID + " ;");
+			rs.next();
+			
+			data.setClothesID(rs.getInt(1));
+			data.setComfortRate(rs.getInt(2));
+			data.setHeadClothes(rs.getString(3));
+			data.setThoraxClothes(rs.getString(4));
+			data.setHandsClothes(rs.getString(5));
+			data.setLegsClothes(rs.getString(6));
+			data.setFeetClothes(rs.getString(7));
+			data.setComment(rs.getString(8));
+			
+			rs.close();
+			con.close();
+			return data;
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
+	}
+	public Weather getWeatherData(int ID) {
+		try {
+			Weather data = new Weather();
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection(fullDatabaseName, databaseUser, databasePassword);
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * " + "FROM weathersystemdatabase.weather "
+					+ "WHERE measurementID = "+ ID + " ;");
+			rs.next();
+			
+			data.setMeasurementID(rs.getInt(1));
+			data.setTemperature(rs.getFloat(2));
+			data.setHumidity(rs.getFloat(3));
+			data.setAirPressure(rs.getFloat(4));
+			data.setMeasurementDate(rs.getTimestamp(5));
 			
 			rs.close();
 			con.close();
@@ -286,6 +391,33 @@ public class DatabaseCommunication {
 			Connection con = DriverManager.getConnection(fullDatabaseName, databaseUser, databasePassword);
 			Statement stmt = con.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * " + "FROM weathersystemdatabase.weather;");
+			int x = 0;
+			while (rs.next()) {
+				data[x] = new Weather();
+
+				data[x].setMeasurementID(rs.getInt(1));
+				data[x].setTemperature(rs.getFloat(2));
+				data[x].setHumidity(rs.getFloat(3));
+				data[x].setAirPressure(rs.getFloat(4));
+				data[x].setMeasurementDate(rs.getTimestamp(5));
+
+				x++;
+			}
+			rs.close();
+			con.close();
+			return data;
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
+	}
+	public Weather[] getTodayWeatherData() {
+		try {
+			Weather[] data = new Weather[sizeTodayWeather()];
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection(fullDatabaseName, databaseUser, databasePassword);
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM weathersystemdatabase.weather	WHERE CAST(measurementData AS DATE) = CAST(CURRENT_TIMESTAMP AS DATE)");
 			int x = 0;
 			while (rs.next()) {
 				data[x] = new Weather();

@@ -26,7 +26,7 @@ import weathersystemforcyclists.serial.WeatherStation;
 
 public class MainViewController {
 
-	Pane[] paneList = new Pane[7];
+	Pane[] paneList = new Pane[6];
 
 	@FXML
 	private Pane pane;
@@ -66,7 +66,11 @@ public class MainViewController {
 
 	@FXML
 	void deleteTraining(MouseEvent event) {
-
+		closeAll.setVisible(true);
+		setDisableAllMenuButton(true);
+		helpButton.setVisible(true);
+		pane.setVisible(true);
+		pane.getChildren().setAll(paneList[4]);
 	}
 
 	@FXML
@@ -76,6 +80,11 @@ public class MainViewController {
 
 	@FXML
 	void help(MouseEvent event) {
+		closeAll.setVisible(true);
+		setDisableAllMenuButton(true);
+		helpButton.setVisible(true);
+		pane.setVisible(true);
+		pane.getChildren().setAll(paneList[5]);
 
 	}
 
@@ -89,13 +98,13 @@ public class MainViewController {
 
 		try {
 			ClothesSelectionController.setMainStationObject(weatherStation);
-			paneList[0] = FXMLLoader.load(getClass().getResource("clothesselection/ClothesSelection.fxml"));
+			paneList[1] = FXMLLoader.load(getClass().getResource("clothesselection/ClothesSelection.fxml"));
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		pane.getChildren().setAll(paneList[0]);
+		pane.getChildren().setAll(paneList[1]);
 
 	}
 
@@ -107,13 +116,13 @@ public class MainViewController {
 		pane.setVisible(true);
 
 		try {
-			paneList[1] = FXMLLoader.load(getClass().getResource("showall/showAll.fxml"));
+			paneList[2] = FXMLLoader.load(getClass().getResource("showall/showAll.fxml"));
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		pane.getChildren().setAll(paneList[1]);
+		pane.getChildren().setAll(paneList[2]);
 	}
 
 //--------------------------------------------------
@@ -367,6 +376,12 @@ public class MainViewController {
 
 	@FXML
 	void initialize() {
-
+		try {
+			paneList[4] = FXMLLoader.load(getClass().getResource("delete/Delete.fxml"));
+			paneList[5] = FXMLLoader.load(getClass().getResource("help/Help.fxml"));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

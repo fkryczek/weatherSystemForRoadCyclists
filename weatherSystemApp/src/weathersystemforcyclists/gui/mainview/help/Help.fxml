@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#787880" height="100.0" layoutX="25.0" layoutY="25.0" opacity="0.79" stroke="TRANSPARENT" strokeType="INSIDE" width="850.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="325.0" layoutX="100.0" layoutY="87.0" opacity="0.9" stroke="TRANSPARENT" strokeType="INSIDE" style="-fx-text-fill: black;" width="750.0" />
+      <Text fill="WHITE" layoutX="55.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Help" wrappingWidth="463.017578125">
+         <font>
+            <Font name="System Bold" size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="190.0" layoutY="231.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Application designed and coded by Filip Kryczek as a part of graduate work ">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Text>
+      <Text layoutX="160.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&quot;Design and implementation of a weather system for road cyclists&quot;">
+         <font>
+            <Font name="System Bold Italic" size="20.0" />
+         </font>
+      </Text>
+      <Line endX="410.0" endY="1.0" fill="#d4b48c" layoutX="270.0" layoutY="237.0" stroke="#d4b48c" strokeWidth="2.0" />
+      <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="326.0" layoutY="293.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../etc/icons/GitHub.png" />
+         </image>
+      </ImageView>
+      <TextField editable="false" layoutX="357.0" layoutY="294.0" prefHeight="31.0" prefWidth="280.0" style="-fx-background-color: transparent; -fx-accent: #d4b48c;" text="github.com/fkryczek/pracaDyplomowa">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+   </children>
+</Pane>

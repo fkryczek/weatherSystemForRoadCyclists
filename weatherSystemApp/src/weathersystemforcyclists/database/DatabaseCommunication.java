@@ -14,9 +14,9 @@ import weathersystemforcyclists.database.table.Weather;
 
 public class DatabaseCommunication {
 
-	private String databaseName = "";
-	private String databaseUser = "";
-	private String databasePassword = "";
+	private String databaseName = "weathersystemdatabase";
+	private String databaseUser = "root";
+	private String databasePassword = "pdFK2020.";
 
 	private String fullDatabaseName = "jdbc:mysql://localhost:3306/" + databaseName
 			+ "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=CET";
@@ -63,14 +63,14 @@ public class DatabaseCommunication {
 		return execute;
 	}
 
-	public void deleteWeatherMeasurement(int measurementID) {
+	public void deleteTraining(int ID) {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection(fullDatabaseName, databaseUser, databasePassword);
 
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate(
-					"DELETE FROM `weathersystemdatabase`.`weather`WHERE measurementID = " + measurementID + ";");
+					"DELETE FROM weathersystemdatabase.training WHERE trainingID = " + ID + ";");
 			con.close();
 
 		} catch (Exception e) {
@@ -122,6 +122,26 @@ public class DatabaseCommunication {
 		}
 		return null;
 
+	}
+	
+	public int checkRecord (String tableName, int ID, String columnName) {
+		int size = 0;
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection(fullDatabaseName, databaseUser, databasePassword);
+
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT COUNT(*) FROM weathersystemdatabase." + tableName + " "
+					+ "WHERE " + columnName + " = " + ID + " ;");
+			rs.next();
+			size = rs.getInt(1);
+			rs.close();
+			con.close();
+			stmt.close();
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return size;
 	}
 
 	public int size(String tableName) {
@@ -227,6 +247,29 @@ public class DatabaseCommunication {
 
 				x++;
 			}
+			rs.close();
+			con.close();
+			return data;
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
+	}
+	public Training getTrainingData(int ID) {
+		try {
+			Training data = new Training();
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection con = DriverManager.getConnection(fullDatabaseName, databaseUser, databasePassword);
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * " + "FROM weathersystemdatabase.training "
+					+ "WHERE trainingID = "+ ID + " ;");
+			rs.next();
+			data.setClothesID(rs.getInt(1));
+			data.setMeasurementID(rs.getInt(2));
+			data.setTainingID(rs.getInt(3));
+			data.setStartTime(rs.getTimestamp(4));
+			data.setEndTime(rs.getTimestamp(5));
+			
 			rs.close();
 			con.close();
 			return data;

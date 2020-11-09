@@ -15,14 +15,14 @@
 
 <Pane fx:id="clothesSelectionPane" prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weathersystemforcyclists.gui.mainview.clothesselection.ClothesSelectionController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#787880" height="100.0" layoutX="25.0" layoutY="25.0" opacity="0.79" stroke="TRANSPARENT" strokeType="INSIDE" width="850.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="525.0" layoutX="95.0" layoutY="87.0" opacity="0.9" stroke="TRANSPARENT" strokeType="INSIDE" width="750.0" />
+      <Rectangle arcHeight="50.0" arcWidth="50.0" fill="#787880" height="100.0" layoutX="25.0" layoutY="25.0" opacity="0.79" stroke="TRANSPARENT" strokeType="INSIDE" width="850.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="525.0" layoutX="75.0" layoutY="88.0" opacity="0.9" stroke="TRANSPARENT" strokeType="INSIDE" width="750.0" />
       <Text fill="WHITE" layoutX="55.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clothes selection" wrappingWidth="463.017578125">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Text>
-      <Pane layoutX="95.0" layoutY="87.0" prefHeight="525.0" prefWidth="750.0">
+      <Pane layoutX="75.0" layoutY="88.0" prefHeight="525.0" prefWidth="750.0">
          <children>
             <Pane layoutX="14.0" layoutY="35.0" prefHeight="81.0" prefWidth="260.0">
                <children>
@@ -79,8 +79,8 @@
             <JFXButton fx:id="getBestMatchButton" alignment="CENTER" buttonType="RAISED" layoutX="509.0" layoutY="61.0" onMouseClicked="#getBestMatch" prefHeight="30.0" prefWidth="180.0" ripplerFill="#d4b48c" text="GET BEST MATCH" />
             <TableView fx:id="table" layoutY="131.0" onMouseClicked="#setSelectedTraining" prefHeight="265.0" prefWidth="750.0" style="-fx-selection-bar: #d4b48c; -fx-selection-bar-non-focused: #d4b48c; -fx-border-color: white;">
               <columns>
-                <TableColumn fx:id="IDColumn" prefWidth="22.0" style="-fx-alignment: CENTER;" text="ID" />
-                  <TableColumn fx:id="dateColumn" prefWidth="141.0" style="-fx-alignment: CENTER;" text="Date" />
+                <TableColumn fx:id="IDColumn" prefWidth="30.0" style="-fx-alignment: CENTER;" text="ID" />
+                  <TableColumn fx:id="dateColumn" prefWidth="133.0" style="-fx-alignment: CENTER;" text="Date" />
                   <TableColumn fx:id="tempColumn" prefWidth="64.0" style="-fx-alignment: CENTER;" text="Temp. [°C]" />
                   <TableColumn fx:id="humColumn" prefWidth="75.0" style="-fx-alignment: CENTER;" text="Hum. [%RH]" />
                   <TableColumn fx:id="pressColumn" prefWidth="74.0" style="-fx-alignment: CENTER;" text="Press. [hPa]" />

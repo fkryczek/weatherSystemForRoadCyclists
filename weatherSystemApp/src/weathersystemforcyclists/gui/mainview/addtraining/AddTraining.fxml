@@ -14,14 +14,14 @@
 
 <Pane fx:id="clothesSelectionPane" prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weathersystemforcyclists.gui.mainview.addtraining.AddTrainingController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#787880" height="100.0" layoutX="25.0" layoutY="25.0" opacity="0.79" stroke="TRANSPARENT" strokeType="INSIDE" width="850.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="550.0" layoutX="97.0" layoutY="86.0" opacity="0.9" stroke="TRANSPARENT" strokeType="INSIDE" style="-fx-text-fill: black;" width="750.0" />
+      <Rectangle arcHeight="50.0" arcWidth="50.0" fill="#787880" height="100.0" layoutX="25.0" layoutY="25.0" opacity="0.79" stroke="TRANSPARENT" strokeType="INSIDE" width="850.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="550.0" layoutX="75.0" layoutY="86.0" opacity="0.9" stroke="TRANSPARENT" strokeType="INSIDE" style="-fx-text-fill: black;" width="750.0" />
       <Text fill="WHITE" layoutX="55.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add training" wrappingWidth="463.017578125">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Text>
-      <Pane layoutX="140.0" layoutY="125.0" prefHeight="50.0" prefWidth="650.0">
+      <Pane layoutX="118.0" layoutY="125.0" prefHeight="50.0" prefWidth="650.0">
          <children>
             <Text layoutX="20.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Training">
                <font>
@@ -54,13 +54,13 @@
                   <Font size="13.0" />
                </font>
             </TextField>
-            <Line endX="75.0" fill="#d4b48c" layoutX="187.0" layoutY="38.0" stroke="#d4b48c" strokeWidth="2.0" />
-            <Line endX="75.0" fill="#d4b48c" layoutX="326.0" layoutY="38.0" stroke="#d4b48c" strokeWidth="2.0" />
+            <Line endX="75.0" fill="#d4b48c" layoutX="187.0" layoutY="39.0" stroke="#d4b48c" strokeWidth="2.0" />
+            <Line endX="75.0" fill="#d4b48c" layoutX="320.0" layoutY="38.0" stroke="#d4b48c" strokeWidth="2.0" />
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d4b48c" height="25.0" layoutX="557.0" layoutY="13.0" opacity="0.4" stroke="#4677a0" strokeType="INSIDE" width="45.0" />
             <JFXButton alignment="CENTER" buttonType="RAISED" layoutX="557.0" layoutY="13.0" onMouseClicked="#getNowData" prefHeight="25.0" prefWidth="45.0" ripplerFill="#d4b48c" text="Now" />
          </children>
       </Pane>
-      <Pane layoutX="140.0" layoutY="175.0" prefHeight="145.0" prefWidth="650.0">
+      <Pane layoutX="118.0" layoutY="175.0" prefHeight="145.0" prefWidth="650.0">
          <children>
             <Text layoutX="20.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Weather">
                <font>
@@ -78,7 +78,7 @@
             </TableView>
          </children>
       </Pane>
-      <Pane layoutX="147.0" layoutY="320.0" prefHeight="260.0" prefWidth="650.0">
+      <Pane layoutX="125.0" layoutY="320.0" prefHeight="260.0" prefWidth="650.0">
          <children>
             <Text layoutX="19.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clothes">
                <font>
@@ -91,6 +91,16 @@
                </font>
             </Text>
             <TextField fx:id="headTextField" layoutX="125.0" layoutY="30.0" prefHeight="29.0" prefWidth="500.0" style="-fx-background-color: transparent; -fx-accent: #d4b48c;">
+               <font>
+                  <Font size="13.0" />
+               </font>
+            </TextField>
+            <Text layoutX="45.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thorax:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Text>
+            <TextField fx:id="thoraxTextField" layoutX="125.0" layoutY="60.0" prefHeight="29.0" prefWidth="500.0" style="-fx-background-color: transparent; -fx-accent: #d4b48c;">
                <font>
                   <Font size="13.0" />
                </font>
@@ -141,16 +151,6 @@
                </font>
             </Text>
             <JFXSlider fx:id="rateSlider" blockIncrement="1.0" layoutX="122.0" layoutY="218.0" majorTickUnit="5.0" max="10.0" minorTickCount="1" prefHeight="40.0" prefWidth="100.0" showTickLabels="true" stylesheets="@AddTrainingStyle.css" />
-            <Text layoutX="45.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thorax:">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Text>
-            <TextField fx:id="thoraxTextField" layoutX="125.0" layoutY="60.0" prefHeight="29.0" prefWidth="500.0" style="-fx-background-color: transparent; -fx-accent: #d4b48c;">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </TextField>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff8c0000" height="31.0" layoutX="490.0" layoutY="5.0" opacity="0.4" stroke="#4677a0" strokeType="INSIDE" width="125.0" />
             <TextField fx:id="trainingIDTextField" alignment="CENTER" layoutX="538.0" layoutY="5.0" prefHeight="25.0" prefWidth="75.0" promptText="training ID" style="-fx-background-color: transparent; -fx-accent: #d4b48c;">
                <font>
@@ -167,7 +167,7 @@
             <Line endX="500.0" fill="#d4b48c" layoutX="125.0" layoutY="209.0" stroke="#d4b48c" strokeWidth="2.0" />
          </children>
       </Pane>
-      <Pane layoutX="147.0" layoutY="580.0" prefHeight="50.0" prefWidth="650.0">
+      <Pane layoutX="125.0" layoutY="580.0" prefHeight="50.0" prefWidth="650.0">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d4b48c" height="30.0" layoutX="225.0" layoutY="10.0" opacity="0.4" stroke="#4677a0" strokeType="INSIDE" width="200.0" />
             <JFXButton fx:id="addTrainingButton" alignment="CENTER" buttonType="RAISED" layoutX="225.0" layoutY="10.0" onMouseClicked="#addTraining" prefHeight="30.0" prefWidth="200.0" ripplerFill="#d4b48c" text="Add training" />

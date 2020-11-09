@@ -14,14 +14,14 @@
 
 <Pane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weathersystemforcyclists.gui.mainview.edittraining.EditTrainingController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#787880" height="100.0" layoutX="25.0" layoutY="25.0" opacity="0.79" stroke="TRANSPARENT" strokeType="INSIDE" width="850.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="550.0" layoutX="97.0" layoutY="86.0" opacity="0.9" stroke="TRANSPARENT" strokeType="INSIDE" style="-fx-text-fill: black;" width="750.0" />
+      <Rectangle arcHeight="50.0" arcWidth="50.0" fill="#787880" height="100.0" layoutX="25.0" layoutY="25.0" opacity="0.79" stroke="TRANSPARENT" strokeType="INSIDE" width="850.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="550.0" layoutX="75.0" layoutY="86.0" opacity="0.9" stroke="TRANSPARENT" strokeType="INSIDE" style="-fx-text-fill: black;" width="750.0" />
       <Text fill="WHITE" layoutX="55.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit training" wrappingWidth="463.017578125">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Text>
-      <Pane layoutX="140.0" layoutY="125.0" prefHeight="50.0" prefWidth="650.0">
+      <Pane layoutX="123.0" layoutY="131.0" prefHeight="50.0" prefWidth="650.0">
          <children>
             <Text layoutX="20.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Training">
                <font>
@@ -55,10 +55,10 @@
                </font>
             </TextField>
             <Line endX="75.0" fill="#d4b48c" layoutX="187.0" layoutY="38.0" stroke="#d4b48c" strokeWidth="2.0" />
-            <Line endX="75.0" fill="#d4b48c" layoutX="326.0" layoutY="38.0" stroke="#d4b48c" strokeWidth="2.0" />
+            <Line endX="75.0" fill="#d4b48c" layoutX="320.0" layoutY="38.0" stroke="#d4b48c" strokeWidth="2.0" />
          </children>
       </Pane>
-      <Pane layoutX="140.0" layoutY="175.0" prefHeight="145.0" prefWidth="650.0">
+      <Pane layoutX="123.0" layoutY="181.0" prefHeight="145.0" prefWidth="650.0">
          <children>
             <Text layoutX="20.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Weather">
                <font>
@@ -76,7 +76,7 @@
             </TableView>
          </children>
       </Pane>
-      <Pane layoutX="147.0" layoutY="320.0" prefHeight="260.0" prefWidth="650.0">
+      <Pane layoutX="130.0" layoutY="326.0" prefHeight="260.0" prefWidth="650.0">
          <children>
             <Text layoutX="19.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clothes">
                <font>
@@ -157,19 +157,19 @@
             <Line endX="500.0" fill="#d4b48c" layoutX="125.0" layoutY="209.0" stroke="#d4b48c" strokeWidth="2.0" />
          </children>
       </Pane>
-      <Pane layoutX="147.0" layoutY="580.0" prefHeight="50.0" prefWidth="650.0">
+      <Pane layoutX="130.0" layoutY="586.0" prefHeight="50.0" prefWidth="650.0">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d4b48c" height="30.0" layoutX="337.0" layoutY="11.0" opacity="0.4" stroke="#4677a0" strokeType="INSIDE" width="200.0" />
-            <JFXButton fx:id="editTrainingButton" alignment="CENTER" buttonType="RAISED" disable="true" layoutX="337.0" layoutY="10.0" onMouseClicked="#editTraining" prefHeight="30.0" prefWidth="200.0" ripplerFill="#d4b48c" text="Edit training" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d4b48c" height="30.0" layoutX="114.0" layoutY="10.0" opacity="0.4" stroke="#4677a0" strokeType="INSIDE" width="200.0" />
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fffffff9" height="26.0" layoutX="236.0" layoutY="12.0" stroke="#4677a0" strokeType="INSIDE" width="77.0" />
-            <TextField fx:id="trainingIDTextField" alignment="CENTER" layoutX="237.0" layoutY="12.0" opacity="0.5" prefHeight="29.0" prefWidth="75.0" promptText="training ID" style="-fx-background-color: transparent; -fx-accent: #d4b48c;">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </TextField>
-            <JFXButton fx:id="loadTraining" alignment="CENTER" buttonType="RAISED" layoutX="114.0" layoutY="10.0" onMouseClicked="#loadTraining" prefHeight="30.0" prefWidth="122.0" ripplerFill="#d4b48c" text="Load training" />
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d4b48c" height="30.0" layoutX="225.0" layoutY="11.0" opacity="0.4" stroke="#4677a0" strokeType="INSIDE" width="200.0" />
+            <JFXButton fx:id="editTrainingButton" alignment="CENTER" buttonType="RAISED" disable="true" layoutX="225.0" layoutY="10.0" onMouseClicked="#editTraining" prefHeight="30.0" prefWidth="200.0" ripplerFill="#d4b48c" text="Edit training" />
          </children>
       </Pane>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d4b48c" height="30.0" layoutX="350.0" layoutY="94.0" opacity="0.4" stroke="#4677a0" strokeType="INSIDE" width="200.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#fffffff9" height="26.0" layoutX="472.0" layoutY="96.0" stroke="#4677a0" strokeType="INSIDE" width="77.0" />
+      <TextField fx:id="trainingIDTextField" alignment="CENTER" layoutX="473.0" layoutY="96.0" opacity="0.5" prefHeight="29.0" prefWidth="75.0" promptText="training ID" style="-fx-background-color: transparent; -fx-accent: #d4b48c;">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </TextField>
+      <JFXButton fx:id="loadTraining" alignment="CENTER" buttonType="RAISED" layoutX="350.0" layoutY="94.0" onMouseClicked="#loadTraining" prefHeight="30.0" prefWidth="122.0" ripplerFill="#d4b48c" text="Load training" />
    </children>
 </Pane>

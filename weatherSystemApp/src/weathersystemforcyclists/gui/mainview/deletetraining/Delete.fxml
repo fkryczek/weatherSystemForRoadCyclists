@@ -13,14 +13,14 @@
 
 <Pane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="weathersystemforcyclists.gui.mainview.deletetraining.DeleteController">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#787880" height="100.0" layoutX="25.0" layoutY="25.0" opacity="0.79" stroke="TRANSPARENT" strokeType="INSIDE" width="850.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="226.0" layoutX="182.0" layoutY="87.0" opacity="0.9" stroke="TRANSPARENT" strokeType="INSIDE" style="-fx-text-fill: black;" width="587.0" />
+      <Rectangle arcHeight="50.0" arcWidth="50.0" fill="#787880" height="100.0" layoutX="25.0" layoutY="25.0" opacity="0.79" stroke="TRANSPARENT" strokeType="INSIDE" width="850.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="226.0" layoutX="157.0" layoutY="88.0" opacity="0.9" stroke="TRANSPARENT" strokeType="INSIDE" style="-fx-text-fill: black;" width="587.0" />
       <Text fill="WHITE" layoutX="55.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Delete training" wrappingWidth="463.017578125">
          <font>
             <Font name="System Bold" size="25.0" />
          </font>
       </Text>
-      <Pane layoutX="325.0" layoutY="125.0" prefHeight="100.0" prefWidth="300.0">
+      <Pane layoutX="300.0" layoutY="126.0" prefHeight="100.0" prefWidth="300.0">
          <children>
             <Line endX="118.0" fill="#d4b48c" layoutX="24.0" layoutY="64.0" startX="-7.0" stroke="#d4b48c" strokeWidth="2.0" />
             <Text layoutX="17.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Training ID:">
@@ -40,7 +40,7 @@
             <Label fx:id="infoLabel" alignment="CENTER" layoutX="1.0" layoutY="69.0" prefHeight="17.0" prefWidth="300.0" />
          </children>
       </Pane>
-      <TableView fx:id="table" layoutX="182.0" layoutY="212.0" prefHeight="100.0" prefWidth="587.0" style="-fx-selection-bar: #d4b48c; -fx-selection-bar-non-focused: #d4b48c;">
+      <TableView fx:id="table" layoutX="157.0" layoutY="213.0" prefHeight="100.0" prefWidth="587.0" style="-fx-selection-bar: #d4b48c; -fx-selection-bar-non-focused: #d4b48c;">
          <columns>
             <TableColumn fx:id="trainingID" prefWidth="51.0" style="-fx-alignment: CENTER;" text="ID" />
             <TableColumn fx:id="weatherID" prefWidth="83.0" style="-fx-alignment: CENTER;" text="Weather ID" />

@@ -20,6 +20,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import weathersystemforcyclists.database.DatabaseCommunication;
 import weathersystemforcyclists.database.table.Clothes;
 import weathersystemforcyclists.database.table.Training;
@@ -102,10 +103,12 @@ public class EditTrainingController {
     	databaseCommunication.setClothesData(true, training.getClothesID(), rateSlider.getValue(), headTextField.getText(), thoraxTextField.getText(),handsTextField.getText(), legsTextField.getText(), feetTextField.getText(), commentTextField.getText());
     	databaseCommunication.setTraining(training);
     	editTrainingButton.setDisable(true);
+    	editTrainingButton.setTextFill((Color.GREEN));
     }
 
     @FXML
     void loadTraining(MouseEvent event) {
+    	editTrainingButton.setTextFill((Color.BLACK));
     	int trainingIDNumber = tryParse(trainingIDTextField.getText());
 		if (trainingIDNumber == -1) {
 			trainingIDTextField.setStyle("-fx-text-inner-color: red");

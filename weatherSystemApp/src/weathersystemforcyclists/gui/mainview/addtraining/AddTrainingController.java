@@ -1,14 +1,10 @@
 package weathersystemforcyclists.gui.mainview.addtraining;
 
 import java.sql.Timestamp;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXSlider;
-import com.sun.prism.paint.Color;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -19,21 +15,32 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import weathersystemforcyclists.database.DatabaseCommunication;
 import weathersystemforcyclists.database.table.Clothes;
 import weathersystemforcyclists.database.table.Training;
 import weathersystemforcyclists.database.table.Weather;
+import weathersystemforcyclists.log.LOG;
 
 public class AddTrainingController {
 	private ObservableList<Weather> weatherList = FXCollections.observableArrayList();
 	private DatabaseCommunication databaseCommunication = new DatabaseCommunication();
 	private Training training = new Training();
-
+	private LOG log = new LOG("ATC");
 	private Integer tryParse(String text) {
 		try {
 			return Integer.parseInt(text);
 		} catch (NumberFormatException e) {
 			return -1;
+		}
+	}
+	
+	private boolean checkTimestrampParse (String text) {
+		try {
+			Timestamp.valueOf(text);
+			return true; 
+		} catch(Exception e) { 
+			return false;
 		}
 	}
 	
@@ -100,12 +107,29 @@ public class AddTrainingController {
     @FXML
     void addTraining(MouseEvent event) {
     	
-
-    	training.setStartTime(Timestamp.valueOf(trainingDate.getValue() + " " + trainingStartTime.getText()));
-    	training.setEndTime(Timestamp.valueOf(trainingDate.getValue() + " " + trainingEndTime.getText()));
-    	databaseCommunication.setClothesData(false, 0, rateSlider.getValue(), headTextField.getText(), thoraxTextField.getText(),handsTextField.getText(), legsTextField.getText(), feetTextField.getText(), commentTextField.getText());
-    	training.setClothesID(databaseCommunication.size("clothes")+1);
-    	databaseCommunication.setTraining(training);
+    	if(checkTimestrampParse(trainingDate.getValue() + " " + trainingStartTime.getText()) || checkTimestrampParse(trainingDate.getValue() + " " + trainingEndTime.getText())) {
+    			if(training.getMeasurementID()>0) {
+    				training.setStartTime(Timestamp.valueOf(trainingDate.getValue() + " " + trainingStartTime.getText()));
+        	    	training.setEndTime(Timestamp.valueOf(trainingDate.getValue() + " " + trainingEndTime.getText()));
+        	    	databaseCommunication.setClothesData(false, 0, rateSlider.getValue(), headTextField.getText(), thoraxTextField.getText(),handsTextField.getText(), legsTextField.getText(), feetTextField.getText(), commentTextField.getText());
+        	    	training.setClothesID(databaseCommunication.size("clothes")+1);
+        	    	databaseCommunication.setTraining(training);
+        	    	trainingStartTime.setStyle("-fx-text-inner-color: black");
+        	    	trainingEndTime.setStyle("-fx-text-inner-color: black");
+        	    	trainingDate.setStyle("-fx-text-inner-color: black");
+        	    	weatherTable.setStyle("-fx-background-color: transparent");
+        	    	addTrainingButton.setTextFill((Color.GREEN));
+        	    	addTrainingButton.setDisable(true);
+    			}   
+    			else
+    				weatherTable.setStyle("-fx-background-color: red");
+    		}	
+    	else {
+    		trainingEndTime.setStyle("-fx-text-inner-color: red");
+    		trainingStartTime.setStyle("-fx-text-inner-color: red");
+    		trainingDate.setStyle("-fx-text-inner-color: red");
+    		
+    	}
   
     }
 
@@ -153,8 +177,8 @@ public class AddTrainingController {
 		weatherList.addAll(data);
 
 		id.setCellValueFactory(new PropertyValueFactory<Weather, Integer>("measurementID"));
-		humidity.setCellValueFactory(new PropertyValueFactory<Weather, Float>("temperature"));
-		temperature.setCellValueFactory(new PropertyValueFactory<Weather, Float>("humidity"));
+		temperature.setCellValueFactory(new PropertyValueFactory<Weather, Float>("temperature"));
+		humidity.setCellValueFactory(new PropertyValueFactory<Weather, Float>("humidity"));
 		pressure.setCellValueFactory(new PropertyValueFactory<Weather, Float>("airPressure"));
 		date.setCellValueFactory(new PropertyValueFactory<Weather, Timestamp>("measurementDate"));
 
@@ -170,8 +194,8 @@ public class AddTrainingController {
 		 weatherList.addAll(data);
 
 		id.setCellValueFactory(new PropertyValueFactory<Weather, Integer>("measurementID"));
-		humidity.setCellValueFactory(new PropertyValueFactory<Weather, Float>("temperature"));
-		temperature.setCellValueFactory(new PropertyValueFactory<Weather, Float>("humidity"));
+		temperature.setCellValueFactory(new PropertyValueFactory<Weather, Float>("temperature"));
+		humidity.setCellValueFactory(new PropertyValueFactory<Weather, Float>("humidity"));
 		pressure.setCellValueFactory(new PropertyValueFactory<Weather, Float>("airPressure"));
 		date.setCellValueFactory(new PropertyValueFactory<Weather, Timestamp>("measurementDate"));
 

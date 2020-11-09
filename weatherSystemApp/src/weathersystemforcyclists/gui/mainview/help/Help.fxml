@@ -11,7 +11,7 @@
 
 <Pane prefHeight="650.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#787880" height="100.0" layoutX="25.0" layoutY="25.0" opacity="0.79" stroke="TRANSPARENT" strokeType="INSIDE" width="850.0" />
+      <Rectangle arcHeight="50.0" arcWidth="50.0" fill="#787880" height="100.0" layoutX="25.0" layoutY="25.0" opacity="0.79" stroke="TRANSPARENT" strokeType="INSIDE" width="850.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="325.0" layoutX="100.0" layoutY="87.0" opacity="0.9" stroke="TRANSPARENT" strokeType="INSIDE" style="-fx-text-fill: black;" width="750.0" />
       <Text fill="WHITE" layoutX="55.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Help" wrappingWidth="463.017578125">
          <font>

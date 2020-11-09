@@ -61,7 +61,8 @@ public class DeleteController {
 
 	@FXML
 	void deleteTraining(MouseEvent event) {
-		databaseCommunication.deleteTraining(trainingIDNumber);
+		Training training = databaseCommunication.getTrainingData(trainingIDNumber);
+		databaseCommunication.deleteClothes(training.getClothesID());
 		if (databaseCommunication.checkRecord("training", trainingIDNumber, "trainingID") > 0)
 			infoLabel.setText("(deletion failed)");
 		else {
@@ -79,7 +80,7 @@ public class DeleteController {
 		} else {
 			if (databaseCommunication.checkRecord("training", trainingIDNumber, "trainingID") > 0) {
 				deleteButton.setDisable(false);
-
+				table.getItems().clear();
 				Training data = databaseCommunication.getTrainingData(trainingIDNumber);
 				trainingList.add(data);
 				trainingID.setCellValueFactory(new PropertyValueFactory<Training, Integer>("tainingID"));

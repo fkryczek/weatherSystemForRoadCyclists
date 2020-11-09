@@ -26,7 +26,44 @@ import weathersystemforcyclists.serial.WeatherStation;
 
 public class MainViewController {
 
-	Pane[] paneList = new Pane[7];
+	private Pane[] paneList = new Pane[7];
+	private SerialPortCommunication mainStation = new SerialPortCommunication();
+	private WeatherStation weatherStation = new WeatherStation();
+	private boolean serialBusy = false, isSyncTime = false;
+	private LOG log = new LOG("MVC");
+
+	private void setConnectionText(Label label, boolean connected) {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				if (connected) {
+					label.setTextFill(Color.GREEN);
+					label.setText("CONNECTED");
+				} else {
+					label.setTextFill(Color.RED);
+					label.setText("DISCONNECTED");
+				}
+			}
+		});
+
+	}
+
+	private void setTextInLabel(Label label, String text) {
+		Platform.runLater(new Runnable() {
+			public void run() {
+				label.setText(text);
+			}
+		});
+	}
+
+	private void setDisableAllMenuButton(boolean disable) {
+		stationCommunicationButton.setDisable(disable);
+		clothesSelectButton.setDisable(disable);
+		showAllTrainingButton.setDisable(disable);
+		addTrainingButton.setDisable(disable);
+		editTrainingButton.setDisable(disable);
+		deleteTrainingButton.setDisable(disable);
+		helpButton.setDisable(disable);
+	}
 
 	@FXML
 	private Pane pane;
@@ -48,114 +85,6 @@ public class MainViewController {
 	private JFXButton deleteTrainingButton;
 	@FXML
 	private JFXButton helpButton;
-
-	private void setDisableAllMenuButton(boolean disable) {
-		stationCommunicationButton.setDisable(disable);
-		clothesSelectButton.setDisable(disable);
-		showAllTrainingButton.setDisable(disable);
-		addTrainingButton.setDisable(disable);
-		editTrainingButton.setDisable(disable);
-		deleteTrainingButton.setDisable(disable);
-		helpButton.setDisable(disable);
-	}
-
-	@FXML
-	void addTraining(MouseEvent event) {
-		
-		closeAll.setVisible(true);
-		setDisableAllMenuButton(true);
-		addTrainingButton.setVisible(true);
-		pane.setVisible(true);
-
-		try {
-			ClothesSelectionController.setMainStationObject(weatherStation);
-			paneList[3] = FXMLLoader.load(getClass().getResource("addtraining/AddTraining.fxml"));
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		pane.getChildren().setAll(paneList[3]);
-
-	}
-
-	@FXML
-	void deleteTraining(MouseEvent event) {
-		closeAll.setVisible(true);
-		setDisableAllMenuButton(true);
-		helpButton.setVisible(true);
-		pane.setVisible(true);
-		pane.getChildren().setAll(paneList[5]);
-	}
-
-	@FXML
-	void editTraining(MouseEvent event) {closeAll.setVisible(true);
-	setDisableAllMenuButton(true);
-	addTrainingButton.setVisible(true);
-	pane.setVisible(true);
-
-	try {
-		ClothesSelectionController.setMainStationObject(weatherStation);
-		paneList[4] = FXMLLoader.load(getClass().getResource("edittraining/EditTraining.fxml"));
-
-	} catch (IOException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-	pane.getChildren().setAll(paneList[4]);
-		
-	}
-
-	@FXML
-	void help(MouseEvent event) {
-		closeAll.setVisible(true);
-		setDisableAllMenuButton(true);
-		helpButton.setVisible(true);
-		pane.setVisible(true);
-		pane.getChildren().setAll(paneList[6]);
-
-	}
-
-	@FXML
-	void selectClothes(MouseEvent event) {
-
-		closeAll.setVisible(true);
-		setDisableAllMenuButton(true);
-		clothesSelectButton.setVisible(true);
-		pane.setVisible(true);
-
-		try {
-			ClothesSelectionController.setMainStationObject(weatherStation);
-			paneList[1] = FXMLLoader.load(getClass().getResource("clothesselection/ClothesSelection.fxml"));
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		pane.getChildren().setAll(paneList[1]);
-
-	}
-
-	@FXML
-	void showAllTraining(MouseEvent event) {
-		closeAll.setVisible(true);
-		setDisableAllMenuButton(true);
-		clothesSelectButton.setVisible(true);
-		pane.setVisible(true);
-
-		try {
-			paneList[2] = FXMLLoader.load(getClass().getResource("showall/showAll.fxml"));
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		pane.getChildren().setAll(paneList[2]);
-	}
-
-//--------------------------------------------------
-//					MAIN WINDOW
-//--------------------------------------------------	       
 	@FXML
 	private Label mainStationConnectedStatus;
 	@FXML
@@ -182,9 +111,6 @@ public class MainViewController {
 	private Label syncTime;
 	@FXML
 	private Label humidityOut;
-//--------------------------------------------------
-//				STATIONS COMMUNICATION 
-//--------------------------------------------------
 	@FXML
 	private Pane connectionPane;
 	@FXML
@@ -206,10 +132,96 @@ public class MainViewController {
 	@FXML
 	private Label connectionProgressInfoLabel;
 
-	private SerialPortCommunication mainStation = new SerialPortCommunication();
-	private WeatherStation weatherStation = new WeatherStation();
-	private boolean serialBusy = false, isSyncTime = false;
-	private LOG log = new LOG("MVC");
+	@FXML
+	void selectClothes(MouseEvent event) {
+
+		closeAll.setVisible(true);
+		//setDisableAllMenuButton(true);
+		clothesSelectButton.setVisible(true);
+		pane.setVisible(true);
+
+		try {
+			ClothesSelectionController.setMainStationObject(weatherStation);
+			paneList[1] = FXMLLoader.load(getClass().getResource("clothesselection/ClothesSelection.fxml"));
+
+		} catch (IOException e) {
+			log.addAction("Can not open clothesSelection view.");
+		}
+		pane.getChildren().setAll(paneList[1]);
+
+	}
+
+	@FXML
+	void showAllTraining(MouseEvent event) {
+		closeAll.setVisible(true);
+		//setDisableAllMenuButton(true);
+		clothesSelectButton.setVisible(true);
+		pane.setVisible(true);
+
+		try {
+			paneList[2] = FXMLLoader.load(getClass().getResource("showall/showAll.fxml"));
+
+		} catch (IOException e) {
+			log.addAction("Can not open showAllTraining view.");
+		}
+		pane.getChildren().setAll(paneList[2]);
+	}
+
+	@FXML
+	void addTraining(MouseEvent event) {
+
+		closeAll.setVisible(true);
+		//setDisableAllMenuButton(true);
+		addTrainingButton.setVisible(true);
+		pane.setVisible(true);
+
+		try {
+			ClothesSelectionController.setMainStationObject(weatherStation);
+			paneList[3] = FXMLLoader.load(getClass().getResource("addtraining/AddTraining.fxml"));
+
+		} catch (IOException e) {
+			log.addAction("Can not open addTraining view.");
+		}
+		pane.getChildren().setAll(paneList[3]);
+
+	}
+
+	@FXML
+	void editTraining(MouseEvent event) {
+		closeAll.setVisible(true);
+		//setDisableAllMenuButton(true);
+		addTrainingButton.setVisible(true);
+		pane.setVisible(true);
+
+		try {
+			ClothesSelectionController.setMainStationObject(weatherStation);
+			paneList[4] = FXMLLoader.load(getClass().getResource("edittraining/EditTraining.fxml"));
+
+		} catch (IOException e) {
+			log.addAction("Can not open editTraining view.");
+		}
+		pane.getChildren().setAll(paneList[4]);
+
+	}
+
+	@FXML
+	void deleteTraining(MouseEvent event) {
+		closeAll.setVisible(true);
+		//setDisableAllMenuButton(true);
+		helpButton.setVisible(true);
+		pane.setVisible(true);
+		pane.getChildren().setAll(paneList[5]);
+	}
+
+	@FXML
+	void help(MouseEvent event) {
+		closeAll.setVisible(true);
+		//setDisableAllMenuButton(true);
+		helpButton.setVisible(true);
+		pane.setVisible(true);
+		pane.getChildren().setAll(paneList[6]);
+
+	}
 
 	@FXML
 	void showCommunicationPane(MouseEvent event) {
@@ -266,16 +278,8 @@ public class MainViewController {
 
 	}
 
-//==================================================
 	@FXML
 	void connectMainStation(MouseEvent event) {
-		log.addAction("sasdaasdsads");
-		log.addAction("2sasdaasdsads");
-		log.addAction("3sasdaasdsads");
-		log.addAction("4sasdaasdsads");
-		log.addAction("sas5daasdsads");
-		log.addAction("4sasdaasdsads");
-		log.addAction("sas5daasdsads");
 		new Thread(() -> { // Lambda Expression
 			// WALIDACJA WPISYWANYCH RZECZY
 			serialBusy = true;
@@ -301,10 +305,7 @@ public class MainViewController {
 					disconnectMainStationButton.setDisable(false);
 				}
 
-			} catch (InterruptedException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			} catch (InterruptedException | IOException e) {log.addAction("Can not connect to main station/connetc to remote station/sync all weather data.");}
 			setTextInLabel(connectionProgressInfoLabel, "");
 			connectingProgressBar.setVisible(false);
 			closeAll.setVisible(true);
@@ -331,8 +332,7 @@ public class MainViewController {
 						disconnectMainStationButton.setDisable(true);
 					}
 				} catch (IOException | InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					log.addAction("Can not disconnect stations.");
 				}
 				connectingProgressBar.setVisible(false);
 				closeAll.setVisible(true);
@@ -343,31 +343,11 @@ public class MainViewController {
 
 	}
 
-	private void setConnectionText(Label label, boolean connected) {
-		Platform.runLater(new Runnable() {
-			public void run() {
-				if (connected) {
-					label.setTextFill(Color.GREEN);
-					label.setText("CONNECTED");
-				} else {
-					label.setTextFill(Color.RED);
-					label.setText("DISCONNECTED");
-				}
-			}
-		});
-
-	}
-
-	private void setTextInLabel(Label label, String text) {
-		Platform.runLater(new Runnable() {
-			public void run() {
-				label.setText(text);
-			}
-		});
-	}
-
 	@FXML
 	void syncAllData(MouseEvent event) {
+		new Thread(() -> { // Lambda Expression
+			setTextInLabel(syncTime, "in progress");
+		}).start();
 		if ((!serialBusy || isSyncTime) && weatherStation.isMainStationConnected()
 				&& weatherStation.isRemoteStationConnected() && !weatherStation.getBusyStatus()) {
 			try {
@@ -396,8 +376,7 @@ public class MainViewController {
 				setTextInLabel(syncTime, dtf.format(now));
 				disconnectMainStationButton.setDisable(false);
 			} catch (IOException | InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.addAction("Can not synchronize all data.");
 			}
 		}
 	}
@@ -406,10 +385,14 @@ public class MainViewController {
 	void initialize() {
 		try {
 			paneList[5] = FXMLLoader.load(getClass().getResource("deleteTraining/Delete.fxml"));
+			
+		} catch (IOException e) {
+			log.addAction("Can not open deleteTraining view.");
+		}
+		try {
 			paneList[6] = FXMLLoader.load(getClass().getResource("help/Help.fxml"));
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.addAction("Can not open help view.");
 		}
 	}
 }

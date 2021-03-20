@@ -1,14 +1,15 @@
-# Design and implementation of a weather systemfor road cyclists
+# [IN PROGRESS]
+
+# Design and implementation of a weather system for road cyclists
 
 ## WEATHER STATION
-- Weather station has two parts- main and remote. When you connected wires according to the scheme you must programme Arduino Nano boards.  
 ### Main station 
 - [X] wireless communication with remote station
 - [X] air temperature and atmospheric pressure measurement
 - [X] battery voltage measurement
 - [X] remote reset
 - [X] display data on OLED displays
-- [ ] wire communication with desktop application
+- [X] wire communication with desktop application
 - [X] possibility to charging battery by micro USB
 - [ ] low battery notification 
 #### Used libraries
